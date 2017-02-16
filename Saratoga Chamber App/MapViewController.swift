@@ -16,7 +16,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     
     var searchTerm = ""
     var userSearch = [MKPlacemark]()
-    
     let locationManager = CLLocationManager()
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -29,44 +28,13 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     }
 
     
+    
     override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
         
         if let topItem = self.navigationController?.navigationBar.topItem {
             topItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         }
         
-        if searchTerm == "food" {
-            self.title = "Restaurants"
-        }
-        else if searchTerm == "trail" {
-            self.title = "Biking/Hiking Trails"
-        }
-        else if searchTerm == "park" {
-            self.title = "Parks"
-        }
-        else if searchTerm == "game" {
-            self.title = "Entertainment"
-        }
-        else if searchTerm == "museum" {
-            self.title = "Museums"
-        }
-        else if searchTerm == "church" {
-            self.title = "Church"
-        }
-        else if searchTerm == "The Inn At Saratoga" {
-            self.title = "Hotels"
-        }
-        else if searchTerm == "bank" {
-            self.title = "Banks"
-        }
-        else if searchTerm == "wine" {
-            self.title = "Wine, Beer, and Spirits"
-        }
-        else {
-            self.title = ""
-        }
         
         self.mapView.delegate = self
         
@@ -83,9 +51,14 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         
         let request = MKLocalSearchRequest()
+        
         request.naturalLanguageQuery = searchTerm
         
         request.region = mapView.region
+        
+        let term = searchTerm
+        
+        print (term)
         
         let search = MKLocalSearch(request: request)
         search.startWithCompletionHandler{ response, error in
@@ -93,7 +66,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
                 print("There was an error searching for: \(request.naturalLanguageQuery) error: \(error)")
                 return
             }
-            for item in response!.mapItems {
+            for item in (response!.mapItems){
                 if let mi = item as? MKMapItem {
                     self.userSearch.append(mi.placemark)
                     let dropPin = MKPointAnnotation()
@@ -103,21 +76,24 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
                 }
             }
         }
-        
-        
+
+    
+        super.viewDidLoad()
+       
+
     }
+    
+ 
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        self.locationManager.stopUpdatingLocation()
-        
         let location = locations.last
-        
         let center = CLLocationCoordinate2D(latitude: (location?.coordinate.latitude)!, longitude: (location?.coordinate.longitude)!)
         
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.04, longitudeDelta: 0.04))
 
         self.mapView.setRegion(region, animated: true)
+        self.locationManager.stopUpdatingLocation()
 
     }
     

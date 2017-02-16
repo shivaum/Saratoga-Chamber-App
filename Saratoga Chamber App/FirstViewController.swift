@@ -14,58 +14,63 @@ class FirstViewController: UIViewController {
     var search = ""
     let mapViewController = MapViewController()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    
+    @IBAction func restaurants(sender: AnyObject) {
+        search = "restaurants around me"
     }
     
-    
-    @IBAction func pressedRestaurant(sender: AnyObject) {
-        search = "food"
-        
+    @IBAction func hiking(sender: AnyObject) {
+        search = "trails around me"
     }
     
-    @IBAction func pressedTrails(sender: AnyObject) {
-        search = "trail"
+    @IBAction func parks(sender: AnyObject) {
+        search = "parks around me"
     }
     
-    @IBAction func pressedRecreation(sender: AnyObject) {
-        search = "park"
+    @IBAction func games(sender: AnyObject) {
+        search = "events around me"
     }
-    
-    @IBAction func pressedEntertainment(sender: AnyObject) {
-        search = "games"
-    }
-    
-    @IBAction func pressedMuseums(sender: AnyObject) {
+
+    @IBAction func museums(sender: AnyObject) {
         search = "museum"
     }
     
-    @IBAction func pressedChurch(sender: AnyObject) {
+    @IBAction func church(sender: AnyObject) {
         search = "church"
     }
-    
-    @IBAction func pressedHotels(sender: AnyObject) {
+
+    @IBAction func hotels(sender: AnyObject) {
         search = "The Inn At Saratoga"
     }
     
-    @IBAction func pressedBanks(sender: AnyObject) {
-        search = "bank"
+    
+    @IBAction func banks(sender: AnyObject) {
+         search = "bank"
+    }
+    
+    @IBAction func wine(sender: AnyObject) {
+        search = "alcohol"
     }
     
     
-    @IBAction func pressedWine(sender: AnyObject) {
-        search = "wine"
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
     }
-    
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let locationVC = segue.destinationViewController as! MapViewController
         
-        locationVC.searchTerm = search
+       
+        let locationVC = segue.destinationViewController as! MapViewController
+        locationVC.searchTerm = ((sender?.accessibilityLabel)! + " around me")
+        print ("search term using label " + locationVC.searchTerm)
+        segue.destinationViewController.title = sender?.accessibilityLabel
+        print ("search term from first view " + search)
+        print (sender?.accessibilityLabel)
     }
-
-    
  
 }
+
+
 
 
